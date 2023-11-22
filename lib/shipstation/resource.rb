@@ -4,6 +4,10 @@ module Shipstation
   class Resource
     attr_reader :client
 
+    ERROR_MESSAGES = {
+      400: "",
+    }
+
     def initialize(client)
       @client = client
     end
@@ -33,23 +37,23 @@ module Shipstation
     def handle_response(response)
       case response.status
       when 400
-        raise Error, "Your request was malformed. #{response.body}"
+        raise Error, "Your request was malformed.", 400, response.headers
       when 401
-        raise Error, "You did not supply valid authentication credentials. #{response.body}"
+        raise Error, "You did not supply valid authentication credentials.", 401, response.headers
       when 403
-        raise Error, "You are not allowed to perform that action. #{response.body}"
+        raise Error, "You are not allowed to perform that action.", 403, response.headers
       when 404
-        raise Error, "No results were found for your request. #{response.body}"
+        raise Error, "No results were found for your request.", 404, response.headers
       when 429
-        raise Error, "Your request exceeded the API rate limit. #{response.body}"
+        raise Error, "Your request exceeded the API rate limit.", 429, response.headers
       when 500
-        raise Error, "We were unable to perform the request due to server-side problems. #{response.body}"
+        raise Error, "We were unable to perform the request due to server-side problems.", 500, response.headers
       when 503
-        raise Error, "You have been rate limited for sending more than 40 requests per minute. #{response.body}"
+        raise Error, "You have been rate limited for sending more than 40 requests per minute.", 503, response.headers
       end
 
+      response.body.deep_symbolize_keys!
       response
     end
-
   end
 end

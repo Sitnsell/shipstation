@@ -13,6 +13,34 @@ module Shipstation
       @stubs = stubs
     end
 
+    def account
+      AccountResource.new(self)
+    end
+
+    def carrier
+      CarrierResource.new(self)
+    end
+
+    def order
+      OrderResource.new(self)
+    end
+
+    def product
+      ProductResource.new(self)
+    end
+
+    def shipment
+      ShipmentResource.new(self)
+    end
+
+    def store
+      StoreResource.new(self)
+    end
+
+    def webhook
+      WebhookResource.new(self)
+    end
+
     def connection
       @connection ||= Faraday.new(BASE_URL) do |conn|
         conn.request :authorization, :Basic, Base64.strict_encode64("#{api_key}:#{api_secret}")

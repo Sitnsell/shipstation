@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require "base64"
 require "faraday"
 require "faraday_middleware"
 require_relative "shipstation/version"
 
 module Shipstation
   autoload :Client, "shipstation/client"
+  autoload :Collection, "shipstation/collection"
   autoload :Error, "shipstation/error"
   autoload :Resource, "shipstation/resource"
   autoload :Object, "shipstation/object"
@@ -32,4 +34,17 @@ module Shipstation
   autoload :Success, "shipstation/objects/success"
   autoload :Tag, "shipstation/objects/tag"
   autoload :Webhook, "shipstation/objects/webhook"
+
+  class << self
+    attr_accessor :configuration
+  end
+
+  def self.configure
+    self.configuration ||= Configuration.new
+    yield(configuration)
+  end
+
+  class Configuration
+    attr_accessor :redis_instance
+  end
 end
