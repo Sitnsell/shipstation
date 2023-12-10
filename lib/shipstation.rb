@@ -2,8 +2,9 @@
 
 require "base64"
 require "faraday"
-require "faraday_middleware"
-require_relative "shipstation/version"
+require "string"
+#require "faraday_middleware"
+require "shipstation/version"
 
 module Shipstation
   autoload :Client, "shipstation/client"
@@ -18,6 +19,7 @@ module Shipstation
   autoload :ProductResource, "shipstation/resources/product"
   autoload :ShipmentResource, "shipstation/resources/shipment"
   autoload :StoreResource, "shipstation/resources/store"
+  autoload :WarehouseResource, "shipstation/resources/warehouse"
   autoload :WebhookResource, "shipstation/resources/webhook"
 
   autoload :Account, "shipstation/objects/account"
@@ -33,6 +35,7 @@ module Shipstation
   autoload :Store, "shipstation/objects/store"
   autoload :Success, "shipstation/objects/success"
   autoload :Tag, "shipstation/objects/tag"
+  autoload :Warehouse, "shipstation/objects/warehouse"
   autoload :Webhook, "shipstation/objects/webhook"
 
   class << self

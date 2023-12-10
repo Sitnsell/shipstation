@@ -5,8 +5,14 @@ module Shipstation
     attr_reader :client
 
     ERROR_MESSAGES = {
-      400: "",
-    }
+      "400": "Your request was malformed.",
+      "401": "You did not supply valid authentication credentials.",
+      "403": "You are not allowed to perform that action.",
+      "404": "No results were found for your request.",
+      "429": "Your request exceeded the API rate limit.",
+      "500": "We were unable to perform the request due to server-side problems.",
+      "503": "You have been rate limited for sending more than 40 requests per minute."
+    }.freeze
 
     def initialize(client)
       @client = client
@@ -35,24 +41,8 @@ module Shipstation
     end
 
     def handle_response(response)
-      case response.status
-      when 400
-        raise Error, "Your request was malformed.", 400, response.headers
-      when 401
-        raise Error, "You did not supply valid authentication credentials.", 401, response.headers
-      when 403
-        raise Error, "You are not allowed to perform that action.", 403, response.headers
-      when 404
-        raise Error, "No results were found for your request.", 404, response.headers
-      when 429
-        raise Error, "Your request exceeded the API rate limit.", 429, response.headers
-      when 500
-        raise Error, "We were unable to perform the request due to server-side problems.", 500, response.headers
-      when 503
-        raise Error, "You have been rate limited for sending more than 40 requests per minute.", 503, response.headers
-      end
+      raise Error.new(ERROR_MESSAGES[response.status.to_s], response.status, response.headers) if response.status >= 400
 
-      response.body.deep_symbolize_keys!
       response
     end
   end

@@ -37,6 +37,10 @@ module Shipstation
       StoreResource.new(self)
     end
 
+    def warehouse
+      WarehouseResource.new(self)
+    end
+
     def webhook
       WebhookResource.new(self)
     end
@@ -46,7 +50,6 @@ module Shipstation
         conn.request :authorization, :Basic, Base64.strict_encode64("#{api_key}:#{api_secret}")
         conn.request :json
 
-        conn.response :dates
         conn.response :json, content_type: "application/json"
 
         conn.adapter adapter, @stubs

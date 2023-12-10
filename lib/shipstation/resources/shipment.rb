@@ -8,7 +8,7 @@ module Shipstation
     end
 
     def get_rates(**attributes)
-      response = get_request("shipments/getrates", body: attributes).body
+      response = post_request("shipments/getrates", body: attributes).body
       response.map{ |rate| Rate.new(rate) }
     end
 
