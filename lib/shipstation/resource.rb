@@ -41,6 +41,7 @@ module Shipstation
     end
 
     def handle_response(response)
+      Rails.logger.info response.inspect
       raise Error.new(ERROR_MESSAGES[response.status.to_s], response.status, response.headers) if response.status >= 400
 
       response
